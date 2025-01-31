@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Grid</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #222;
+        }
+
+        /* Menu Bar Styles */
+        nav {
+            width: 100%;
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        nav select {
+            background-color: #333;
+            color: white;
+            border: 1px solid #e50914;
+            font-size: 14px;
+            padding: 5px;
+            width: 100%; /* Make the select take up full width */
+            max-width: calc(100vw - 30px); /* Set max-width to viewport width minus 10px */
+            margin: 0 auto; /* Centers the select within the available width */
+            display: block; /* Makes sure the dropdown is visible on mobile */
+            border-radius: 5px; /* Rounded corners */
+            transition: all 0.3s ease; /* Smooth transition for hover */
+        }
+
+        nav select:hover {
+            border-color: #f1c40f; /* Highlight the dropdown on hover */
+        }
+
+        /* Mobile View: */
+        @media (max-width: 768px) {
+            nav select {
+                display: block;
+            }
+        }
+
+        #linkGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 5px;
+            max-width: 1200px;
+            margin-top: 8px;
+            padding: 2px;
+            width: 100%;
+        }
+
+        .link-card {
+            background-color: white;
+            border-radius: 2px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .link-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .link-card img {
+            width: 100%;
+            height: auto;
+        }
+
+        .link-card h3 {
+            font-size: 10px;
+            margin: 1px;
+            font-weight: normal;
+        }
+
+        .link-card p {
+            margin: 0;
+            font-size: 10px;
+            color: #555;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            text-overflow: ellipsis;
+        }
+
+        #searchInput {
+            margin-top: 10px;
+            padding: 5px;
+            font-size: 13px;
+            width: 92%;
+            max-width: 1200;
+            border: 1px solid #e50914;
+            background-color: #D3D3D3;
+            border-radius: 2px;
+        }
+
+        #seeMoreBtn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #e50914;
+            color: #EAEAEA;
+            border: none;
+            border-radius: 2px;
+        }
+
+        #seeMoreBtn:hover {
+            background-color:#f1c40f; /* hover background color */
+        }
+
+        @media (max-width: 768px) {
+            #linkGrid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 769px) {
+            #linkGrid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Menu Bar -->
+    <nav>
+        <select id="categorySelect">
+            <option value="all">All</option>
+            <option value="movies">Movies</option>
+            <option value="webseries">Web Series</option>
+            <option value="shorts">Shorts</option>
+        </select>
+    </nav>
+
+    <input type="text" id="searchInput" placeholder="Search for links...">
+    <div id="linkGrid"></div>
+    <button id="seeMoreBtn">See More</button>
+
+    <script>
+        const dataMovies = [
+            {
+                "title": "Judwaa 2",
+                "url": "https://www.dailymotion.com/video/x6ayfba",
+                "thumbnail": "https://s1.dmcdn.net/v/MkAG61RZPKIhjhv5u/x240", 
+                "description": ""
+            },
+            {
+                "title": "Nikka Zaildar",
+                "url": "https://www.dailymotion.com/video/x8p9dxg",
+                "thumbnail": "https://s1.dmcdn.net/v/VN8V41bGtHuUnYwyS/x240", 
+                "description": ""
+            }
+        ];
+
+        const dataWebSeries = [
+            {
+                "title": "Moh",
+                "url": "https://www.dailymotion.com/video/x8g59ez",
+                "thumbnail": "https://s2.dmcdn.net/v/USkxh1d5-CEzqBq7s/x240", 
+                "description": "GitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "Search FilteringGitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "GitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "GitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "GitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "Search FilteringGitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "GitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "GitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "GitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "Search FilteringGitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "GitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "GitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "GitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "Search FilteringGitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "GitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "GitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "GitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "Search FilteringGitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "GitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "GitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "GitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "GitHub is where over 100 million developers shape the future of software, together."
+            }
+        ];
+
+        const dataShorts = [
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "Search FilteringGitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "GitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "GitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "GitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "Search FilteringGitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "GitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "GitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "GitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "Search FilteringGitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "GitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "GitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "GitHub is where over 100 million developers shape the future of software, together."
+            },
+            {
+                "title": "Google",
+                "url": "https://www.google.com",
+                "thumbnail": "https://img.youtube.com/vi/53COejJRiHQ/maxresdefault.jpg", 
+                "description": "Search FilteringGitHub is where over 100 million developers shape the future of software, together."
+            }
+        ];
+
+        // All links combined in a single array
+        const dataAll = [...dataMovies, ...dataWebSeries, ...dataShorts];
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const categorySelect = document.getElementById("categorySelect");
+            const searchInput = document.getElementById("searchInput");
+            const linkGrid = document.getElementById("linkGrid");
+            let filteredLinks = dataAll;
+
+            // Display links based on category
+            function displayLinks(links) {
+                linkGrid.innerHTML = links.map(link => `
+                    <div class="link-card">
+                        <a href="${link.url}" target="_blank">
+                            <img src="${link.thumbnail}" alt="${link.title}">
+                            <h3>${link.title}</h3>
+                            <p>${link.description}</p>
+                        </a>
+                    </div>
+                `).join('');
+            }
+
+            // Initial display of all links
+            displayLinks(filteredLinks);
+
+            // Handle category selection
+            categorySelect.addEventListener("change", function () {
+                const selectedCategory = categorySelect.value;
+                if (selectedCategory === "all") {
+                    filteredLinks = dataAll;
+                } else if (selectedCategory === "movies") {
+                    filteredLinks = dataMovies;
+                } else if (selectedCategory === "webseries") {
+                    filteredLinks = dataWebSeries;
+                } else if (selectedCategory === "shorts") {
+                    filteredLinks = dataShorts;
+                }
+                displayLinks(filteredLinks);
+            });
+
+            // Search functionality
+            searchInput.addEventListener("input", function () {
+                const searchTerm = searchInput.value.toLowerCase();
+                
+                if (searchTerm === "") {
+                    // Reset to the currently selected category's links when search is cleared
+                    const selectedCategory = categorySelect.value;
+                    if (selectedCategory === "all") {
+                        filteredLinks = dataAll;
+                    } else if (selectedCategory === "movies") {
+                        filteredLinks = dataMovies;
+                    } else if (selectedCategory === "webseries") {
+                        filteredLinks = dataWebSeries;
+                    } else if (selectedCategory === "shorts") {
+                        filteredLinks = dataShorts;
+                    }
+                } else {
+                    // Filter the links based on the search term
+                    filteredLinks = filteredLinks.filter(link =>
+                        link.title.toLowerCase().includes(searchTerm) ||
+                        link.description.toLowerCase().includes(searchTerm)
+                    );
+                }
+                displayLinks(filteredLinks);
+            });
+        });
+    </script>
+</body>
+</html>
