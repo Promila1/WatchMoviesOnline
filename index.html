@@ -53,19 +53,23 @@
         #linkGrid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 5px;
+            gap: 10px;
             max-width: 1200px;
+            color: #e50914;
+          
             margin-top: 8px;
             padding: 2px;
             width: 100%;
         }
 
         .link-card {
-            background-color: white;
+            background-color: #222;
+            color: #e50914;
             border-radius: 2px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             transition: transform 0.3s ease;
+            border: 1px solid black; /* Red border for each card */
         }
 
         .link-card:hover {
@@ -74,22 +78,29 @@
 
         .link-card img {
             width: 100%;
-            height: auto;
+            height: 150px; /* Set a fixed height */
+            object-fit: cover; /* Ensure consistent image size */
         }
 
+        .link-card a {
+    border: #e50914;
+    text-decoration: none; /* Removes underline from the link */
+}
         .link-card h3 {
             font-size: 10px;
             margin: 1px;
+            color: #EAEAEA;
             font-weight: normal;
         }
 
         .link-card p {
             margin: 0;
             font-size: 10px;
-            color: #555;
             overflow: hidden;
             display: -webkit-box;
+            background-color: #222;
             -webkit-box-orient: vertical;
+            color: #EAEAEA;
             -webkit-line-clamp: 2;
             text-overflow: ellipsis;
         }
@@ -154,13 +165,13 @@
                 "title": "Judwaa 2",
                 "url": "https://www.dailymotion.com/video/x6ayfba",
                 "thumbnail": "https://s1.dmcdn.net/v/MkAG61RZPKIhjhv5u/x240", 
-                "description": ""
+                "description": "Judwaa Full Movie"
             },
             {
                 "title": "Nikka Zaildar",
                 "url": "https://www.dailymotion.com/video/x8p9dxg",
                 "thumbnail": "https://s1.dmcdn.net/v/VN8V41bGtHuUnYwyS/x240", 
-                "description": ""
+                "description": "Nikka Zaildar Full Movie"
             }
         ];
 
@@ -389,13 +400,26 @@
             const linkGrid = document.getElementById("linkGrid");
             let filteredLinks = dataAll;
 
+            // // Display links based on category
+            // function displayLinks(links) {
+            //     linkGrid.innerHTML = links.map(link => `
+            //         <div class="link-card">
+            //             <a href="${link.url}" target="_blank">
+            //                 <img src="${link.thumbnail}" alt="${link.title}">
+            //                 <h3>${link.title}</h3>
+            //                 <p>${link.description}</p>
+            //             </a>
+            //         </div>
+            //     `).join('');
+            // }
+
             // Display links based on category
             function displayLinks(links) {
                 linkGrid.innerHTML = links.map(link => `
                     <div class="link-card">
                         <a href="${link.url}" target="_blank">
                             <img src="${link.thumbnail}" alt="${link.title}">
-                            <h3>${link.title}</h3>
+                           
                             <p>${link.description}</p>
                         </a>
                     </div>
